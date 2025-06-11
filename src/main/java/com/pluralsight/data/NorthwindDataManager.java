@@ -53,8 +53,35 @@ public class NorthwindDataManager {
     }
 
     public List<Product> getProducts(){
+        ArrayList<Product> result = new ArrayList<Product>();
+        String query = """
+        SELECT products.ProductID,
+            products.ProductName,
+            products.SupplierID,
+            products.CategoryID,
+            products.UnitPrice
+            FROM northwind.products;
+        """;
 
-        return null;
+        try(
+                Connection c = dataSource.getConnection();
+                PreparedStatement s = c.prepareStatement(query);
+                ResultSet queryResult = s.executeQuery()
+        ) {
+            while(queryResult.next()){
+                int productID = queryResult.getInt(1);
+                String productName = queryResult.getString(2);
+                int supplierID = queryResult.getInt(3);
+                int categoryID = queryResult.getInt(4);
+                double unitPrice = queryResult.getDouble(5);
+                Product product = new Product(productID, productName, supplierID,categoryID,unitPrice);
+                result.add(product);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     public List<Product> getProductsByCategory(Category category){
