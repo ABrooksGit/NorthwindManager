@@ -106,25 +106,47 @@ public class UserInterface {
 
     private void listAllProducts() {
         List<Product> products = dataManager.getProducts();
-        if(products.stream().count() <= 0){
-            System.out.println("No Products found");
-        }
-        else {
-            System.out.println(" ");
-            products.stream().forEach(p -> System.out.println(p.getId() + ") " + p.getProductName()));
-        }
+        displayProducts(products);
     }
 
     private void listProductsByCategory() {
+        String categoryName = console.promptForString("Enter Category Name: ");
+
+        Category category = dataManager.getCategoryByName(categoryName);
+        if(category != null){
+//            System.out.println("You selected category id : " + category.getId());
+            List<Product> products = dataManager.getProductsByCategory(category);
+            displayProducts(products);
+
+        } else {
+            System.out.println("There is no categoryID");
+        }
     }
 
     private void listProductByPrice() {
+
+        double minPrice = console.promptForDouble("Enter the smallest price: ");
+        double maxPrice = console.promptForDouble("Enter the largest Price: ");
+        List<Product> products = dataManager.getProductByPrice(minPrice, maxPrice);
+        displayProducts(products);
     }
 
     private void listSuppliersAll() {
     }
 
     private void listProductBySupplier() {
+    }
+
+    private void displayProducts(List<Product> products){
+        if(products.stream().count() <= 0){
+            System.out.println("No Products found");
+        }
+        else {
+            System.out.println(" ");
+            products.stream().forEach(p -> System.out.println(p.getId() + ") " + p.getProductName() + " |" + p.getPrice()));
+        }
+
+
     }
 
 
