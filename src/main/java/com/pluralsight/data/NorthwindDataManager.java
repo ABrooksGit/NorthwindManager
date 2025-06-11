@@ -5,6 +5,11 @@ import com.pluralsight.models.Product;
 import com.pluralsight.models.Supplier;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NorthwindDataManager {
@@ -16,7 +21,31 @@ public class NorthwindDataManager {
 
     public List<Category> getCategories(){
 
-        return null;
+        ArrayList<Category> result = new ArrayList<Category>();
+        String query = """
+                select\s
+                CategoryID,
+                CategoryName\s
+                from Categories
+                """;
+
+        try(
+            Connection c = dataSource.getConnection();
+            PreparedStatement s = c.prepareStatement(query);
+            ResultSet queryResult = s.executeQuery()
+        ) {
+            while(queryResult.next()){
+                int categoryID = queryResult.getInt(1);
+                String categoryName = queryResult.getString(2);
+                Category category = new Category(categoryID, categoryName);
+                result.add(category);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return result;
+
     }
 
     public Category getCategoryByName(String categoryName){

@@ -1,15 +1,21 @@
 package com.pluralsight.ui;
 
+import com.pluralsight.data.NorthwindDataManager;
+import com.pluralsight.models.Category;
 import com.pluralsight.models.Employee;
+
+import java.util.List;
 
 public class UserInterface {
 
 
     private Employee currentEmployee;
     private Console console;
+    private NorthwindDataManager dataManager;
 
-    public UserInterface(){
+    public UserInterface(NorthwindDataManager dataManager){
         this.console = new Console();
+        this.dataManager = dataManager;
     }
 
     public void display(){
@@ -75,12 +81,25 @@ public class UserInterface {
                     System.exit(0);
 
             }
+
+            console.promptForString("Please press <Enter> to continue....",true);
+            System.out.println(" ");
+            System.out.println(" ");
         }
 
 
     }
 
     private void listCategoriesAll() {
+        List<Category> categories = dataManager.getCategories();
+        if(categories.stream().count() <= 0 ){
+            System.out.println("No categories found");
+        }
+        else {
+            categories.stream().forEach(c -> System.out.println(c.getCategoryName()));
+        }
+
+
     }
 
     private void listAllProducts() {
