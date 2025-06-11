@@ -14,11 +14,6 @@ public class SuppliersDAO {
         this.dataSource = dataSource;
     }
 
-    public List<Product> getProductsBySupplier(Supplier supplier){
-        return null;
-    }
-
-
 
     public List<Supplier> getSuppliers(){
         return null;

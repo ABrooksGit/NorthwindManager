@@ -2,6 +2,7 @@ package com.pluralsight.data;
 
 import com.pluralsight.models.Category;
 import com.pluralsight.models.Product;
+import com.pluralsight.models.Supplier;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
@@ -128,6 +129,10 @@ public class ProductsDAO {
         }
 
         return result;
+    }
+
+    public List<Product> getProductsBySupplier(Supplier supplier){
+        return null;
     }
 
 }
